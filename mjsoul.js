@@ -1,72 +1,76 @@
 "use strict"
-let config = {
-    mainland: true,
-    region  : "cn", //cn, jp
-    url     : "wss://mj-srv-5.majsoul.com:4101",
-    url1    : "wss://mj-srv-5.majsoul.com:4101",
-    url2    : "wss://mj-srv-6.majsoul.com:4501",
-    url3    : "wss://mjjpgs.mahjongsoul.com:4501",
-    version : "0.6.73.w",
-    proxy   : ""
-}
+const EventEmitter = require('events')
 const url = require('url')
-const ws = require("ws")
-const hpa = require('https-proxy-agent')
+const WS = require("ws")
+const HttpsProxyAgent = require('https-proxy-agent')
 const pb = require("protobufjs")
 const crypto = require('crypto')
 const root = pb.Root.fromJSON(require("./liqi.json"))
 const wrapper = root.lookupType("Wrapper")
 const msgType = {notify: 1, req: 2, res: 3}
-let msgIndex = 0
-let msgQueue = []
-let events = {}
-let client
 
-const mjsoul = {
-    setConfig: function(k, v) {
-        config[k] = v
-    },
-    run: function(onOpen) {
-        if (!config.mainland)
-            config.url = config.url2
-        if (config.region == "jp")
-            config.url = config.url3
-        if (config.proxy) {
-            let agent = new hpa(url.parse(config.proxy))
-            client = new ws(config.url, {agent: agent})
-        } else {
-            client = new ws(config.url)
+class Mjsoul extends EventEmitter {
+    constructor() {
+        super()
+        this.config = {
+            region  : "cn", //cn, jp, us
+            mainland: true,
+            url     : "wss://mj-srv-5.majsoul.com:4101",
+            url2    : "wss://mj-srv-6.majsoul.com:4501",
+            url_jp  : "wss://mjjpgs.mahjongsoul.com:4501",
+            url_us  : "wss://mjusgs.mahjongsoul.com:4501",
+            version : "0.6.73.w",
+            proxy   : ""
         }
-        client.on("open", onOpen)
-        client.on("error", function(err) {
+        this.msgIndex = 0
+        this.msgQueue = []
+        this.client = null
+    }
+
+    setConfig(k, v) {
+        this.config[k] = v
+    }
+
+    run(onOpen) {
+        if (!this.config.mainland)
+            this.config.url = this.config.url2
+        if (this.config.region == "jp")
+            this.config.url = this.config.url_jp
+        if (this.config.region == "us")
+            this.config.url = this.config.url_us
+        if (this.config.proxy) {
+            let agent = new HttpsProxyAgent(url.parse(this.config.proxy))
+            this.client = new WS(this.config.url, {agent: agent})
+        } else {
+            this.client = new WS(this.config.url)
+        }
+        this.client.on("open", onOpen)
+        this.client.on("error", (err) => {
             console.log("error: ", err)
         });
-        client.on("close", function() {
+        this.client.on("close", () => {
             console.log("closed")
-            msgIndex = 0
-            msgQueue = []
+            this.msgIndex = 0
+            this.msgQueue = []
         });
-        client.on("message", function(data) {
+        this.client.on("message", (data) => {
             if (data[0] == msgType.notify) {
                 data = wrapper.decode(data.slice(1))
-                if (events[data.name] !== undefined)
-                    events[data.name](root.lookupType(data.name).decode(data.data))
+                this.emit(data.name.substr(4), root.lookupType(data.name).decode(data.data))
             }
             if (data[0] == msgType.res) {
                 let index = (data[2] << 8 ) + data[1]
-                if (msgQueue[index] !== undefined) {
-                    let dataTpye = root.lookupType(msgQueue[index].t)
-                    msgQueue[index].c(dataTpye.decode(wrapper.decode(data.slice(3)).data))
-                    delete msgQueue[index]
+                if (this.msgQueue[index] !== undefined) {
+                    let dataTpye = root.lookupType(this.msgQueue[index].t)
+                    this.msgQueue[index].c(dataTpye.decode(wrapper.decode(data.slice(3)).data))
+                    delete this.msgQueue[index]
                 } else 
                     console.log("Error: unknown request for the response")
             }
         });
-    },
-    on: function(event, callback) {
-        events[".lq." + event] = callback
-    },
-    api: function(name, callback = function(){}, data = {}) {
+    }
+
+    api(name, callback = function(){}, data = {}) {
         name = ".lq.Lobby." + name
         let service = root.lookup(name).toJSON()
         let reqName = service.requestType
@@ -76,13 +80,14 @@ const mjsoul = {
             name: name,
             data: reqType.encode(reqType.create(data)).finish()
         }
-        msgIndex %= 60007
-        msgQueue[msgIndex] = {t:resName, c:callback}
-        data = Buffer.concat([Buffer.from([msgType.req, msgIndex - (msgIndex >> 8 << 8), msgIndex >> 8]), wrapper.encode(wrapper.create(data)).finish()])
-        client.send(data)
-        msgIndex++
-    },
-    jsonForLogin: function(username, password) {
+        this.msgIndex %= 60007
+        this.msgQueue[this.msgIndex] = {t:resName, c:callback}
+        data = Buffer.concat([Buffer.from([msgType.req, this.msgIndex - (this.msgIndex >> 8 << 8), this.msgIndex >> 8]), wrapper.encode(wrapper.create(data)).finish()])
+        this.client.send(data)
+        this.msgIndex++
+    }
+
+    jsonForLogin(username, password) {
         let k = function(cnt) {
             return Math.random().toString(16).substr(0 - cnt)
         }
@@ -92,11 +97,11 @@ const mjsoul = {
             reconnect: false,
             device: {device_type: "pc", os: "", os_version: "", browser: "chrome"},
             random_key: [k(8), k(4), k(4), k(4), k(12)].join("-"),
-            client_version: config.version,
+            client_version: this.config.version,
             gen_access_token: true,
             currency_platforms: 2
         }
     }
 }
 
-module.exports = mjsoul
+module.exports = Mjsoul
