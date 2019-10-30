@@ -34,7 +34,7 @@ mjsoul.on("NotifyAccountLogout", function(data) {
     console.log("logout", data)
 })
 
-let app = function() {
+let onConn = function() {
     // call api
     mjsoul.api("fetchConnectionInfo", function(data) {
         console.log(data)
@@ -50,5 +50,5 @@ let app = function() {
         })
     }, reqData)
 }
-mjsoul.run(app)
+mjsoul.run(onConn)
 ```
