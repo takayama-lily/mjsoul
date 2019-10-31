@@ -1,6 +1,6 @@
 {
   "name": "mjsoul",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "mjsoul client tool",
   "main": "index.js",
   "repository": {
@@ -11,8 +11,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "mjsoul",
-    "majsoul"
+    "mahjsoul",
+    "majsoul",
+    "MahjongSoul"
   ],
   "author": "takayama",
   "license": "WTFPL",

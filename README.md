@@ -34,7 +34,7 @@ mjsoul.on("NotifyAccountLogout", function(data) {
     console.log("logout", data)
 })
 
-let app = function() {
+let onConn = function() {
     // call api
     mjsoul.api("fetchConnectionInfo", function(data) {
         console.log(data)
@@ -50,5 +50,21 @@ let app = function() {
         })
     }, reqData)
 }
-mjsoul.run(app)
+mjsoul.run(onConn)
+```
+
+mng(管理后台):
+```js
+const Mjsoul = require("mjsoul")
+const Mng = Mjsoul.Mng
+const mng = new Mng()
+
+let onConn = function() {
+    let reqData = mng.jsonForLogin("account", "password")
+    // 后台数据定义文件mng.json
+    mng.api("loginContestManager", function(data) {
+        console.log(data)
+    }, reqData)
+}
+mng.run(onConn)
 ```
