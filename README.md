@@ -6,9 +6,9 @@
 
 接口和数据类型定义在liqi.json中，能处理所有请求、响应和事件
 
-支持国服日服美服，支持代理
+支持代理，支持登陆日服美服，自动重连
 
-暂不支持重连
+暂时不能对局
 
 Install with npm:
 ```
@@ -17,54 +17,58 @@ $ npm i mjsoul
 
 Example:
 ```js
-const Mjsoul = require("mjsoul")
-const mjsoul = new Mjsoul()
+const MJSoul = require("mjsoul")
+const mjsoul = new MJSoul()
 
-/*
-mjsoul.setConfig("proxy", "http://username:password@host:port") // set proxy
-mjsoul.setConfig("region", "jp") // cn=国服 jp=日服 us=美服 default=cn
-mjsoul.setConfig("mainland", false) // 国服使用海外服务器 default=true
+/*　set option
+const mjsoul = new MJSoul({
+    "proxy": "http://username:password@host:port",
+    "url": "wss://mj-srv-6.majsoul.com:4501",
+    "version": "0.6.73.w"
+})
+
+// wss://mj-srv-6.majsoul.com:4501 国服海外
+// wss://mjjpgs.mahjongsoul.com:4501 日服
+// wss://mjusgs.mahjongsoul.com:4501 美服
 */
 
-// bind event
-mjsoul.on("NotifyAnotherLogin", function(data) {
-    console.log("logout", data)
-})
-mjsoul.on("NotifyAccountLogout", function(data) {
-    console.log("logout", data)
-})
-
-let onConn = function() {
+let onOpen = ()=>{
     // call api
-    mjsoul.api("fetchConnectionInfo", function(data) {
+    mjsoul.send("fetchConnectionInfo", (data)=>{
         console.log(data)
     })
 
     let reqData = mjsoul.jsonForLogin("account", "password")
     // login
-    mjsoul.api("login", function(data) {
+    mjsoul.send("login", (data)=>{
         console.log(data)
         // call api
-        mjsoul.api("fetchFriendList", function(data) {
+        mjsoul.send("fetchFriendList", (data)=>{
             console.log(data)
         })
     }, reqData)
 }
-mjsoul.run(onConn)
+
+// bind event
+mjsoul.on("NotifyAnotherLogin", (data)=>{
+    console.log("logout", data)
+})
+mjsoul.on("NotifyAccountLogout", onOpen)
+
+mjsoul.open(onOpen)
 ```
 
-mng(管理后台):
+dhs(管理后台):
 ```js
-const Mjsoul = require("mjsoul")
-const Mng = Mjsoul.Mng
-const mng = new Mng()
+const DHS = require("mjsoul").DHS
+const dhs = new DHS()
 
-let onConn = function() {
-    let reqData = mng.jsonForLogin("account", "password")
-    // 后台数据定义文件mng.json
-    mng.api("loginContestManager", function(data) {
+let onOpen = function() {
+    let reqData = dhs.jsonForLogin("account", "password")
+    // 后台数据定义文件dhs.json
+    dhs.api("loginContestManager", function(data) {
         console.log(data)
     }, reqData)
 }
-mng.run(onConn)
+dhs.open(onOpen)
 ```
