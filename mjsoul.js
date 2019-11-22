@@ -53,7 +53,7 @@ class MJSoul extends EventEmitter {
         this.msgIndex = 0
         this.msgQueue = []
         if (++this.retryTime >= 5)
-            this.emit("error", "Failed too many times")
+            this.emit("error", "failed too many times")
         else if (this.retryFlag)
             this.open(this._onOpen)
     }
@@ -85,7 +85,7 @@ class MJSoul extends EventEmitter {
         try {
             var service = this.root.lookup(name).toJSON()
         } catch(e) {
-            this.emit("warning", "Wrong api name")
+            this.emit("error", "wrong api name")
             return
         }
         let reqName = service.requestType
