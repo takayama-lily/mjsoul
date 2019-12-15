@@ -66,7 +66,7 @@ const dhs = new DHS()
 let onOpen = function() {
     let reqData = dhs.jsonForLogin("account", "password")
     // 后台数据定义文件dhs.json
-    dhs.api("loginContestManager", function(data) {
+    dhs.send("loginContestManager", function(data) {
         console.log(data)
     }, reqData)
 }
