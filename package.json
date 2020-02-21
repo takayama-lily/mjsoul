@@ -1,6 +1,6 @@
 {
   "name": "mjsoul",
-  "version": "1.4.4",
+  "version": "2.0.0",
   "description": "mjsoul client tool",
   "main": "index.js",
   "repository": {
@@ -18,7 +18,6 @@
   "author": "takayama",
   "license": "WTFPL",
   "dependencies": {
-    "https-proxy-agent": "^3.0.1",
     "protobufjs": "^6.8.8",
     "ws": "^7.2.0"
   }

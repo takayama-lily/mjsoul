@@ -31,7 +31,9 @@ const parseById = (id, cb, option = {})=>{
         res.on("end", ()=>{
             cb(parse(raw))
         })
-    }).on("error", ()=>cb({"error":"mjsoul server error"}))
+    }).on("error", err=>{
+        cb({"error": "connection error"})
+    })
 }
 const record = {
     parse: parse,
