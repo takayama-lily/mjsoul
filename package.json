@@ -1,6 +1,6 @@
 {
   "name": "mjsoul",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "mjsoul client tool",
   "main": "index.js",
   "repository": {
@@ -11,14 +11,16 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "riichi",
+    "mahjong",
     "mahjsoul",
     "majsoul",
     "MahjongSoul"
   ],
-  "author": "takayama",
-  "license": "WTFPL",
+  "author": "takayama <takayama@foxmail.com>",
+  "license": "MIT",
   "dependencies": {
     "protobufjs": "^6.8.8",
-    "ws": "^7.2.0"
+    "ws": "^7.2.2"
   }
 }
