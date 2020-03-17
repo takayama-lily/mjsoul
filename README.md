@@ -18,7 +18,7 @@ const mjsoul = new MJSoul()
 
 //　set option
 // const mjsoul = new MJSoul({
-//     "wcOption": {
+//     "wsOption": {
 //         "proxy": ..., //参考websockets/ws中的proxy用法
 //         ...
 //     },
