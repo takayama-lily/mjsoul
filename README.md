@@ -4,7 +4,7 @@
 完成了雀魂底层protobuf数据的解析，只需要调用接口传入json数据，就能收到返回的json数据  
 能处理所有请求、响应和事件(对局暂未实现)  
 可以登陆国服日服美服，自动重新连接  
-接口和数据类型定义在liqi.json中，也可以查看[API](http://104.168.30.204/doc.html)
+接口和数据类型定义在liqi.json中，也可以查看[API](https://takayama-lily.github.io/majsoul/api.html)
 
 **Install with npm:**
 ```
