@@ -1,6 +1,6 @@
 {
   "name": "mjsoul",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "mjsoul client tool",
   "main": "index.js",
   "repository": {
@@ -20,7 +20,7 @@
   "author": "takayama <takayama@foxmail.com>",
   "license": "MIT",
   "dependencies": {
-    "protobufjs": "^6.8.8",
-    "ws": "^7.2.2"
+    "protobufjs": "^6.8.9",
+    "ws": "^7.2.3"
   }
 }

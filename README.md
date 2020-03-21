@@ -1,4 +1,4 @@
-## mjsoul
+# mjsoul
 
 **雀魂客户端组件**  
 完成了雀魂底层protobuf数据的解析，只需要调用接口传入json数据，就能收到返回的json数据  
@@ -7,11 +7,13 @@
 接口和数据类型定义在liqi.json中，也可以查看[API](https://takayama-lily.github.io/majsoul/api.html)
 
 **Install with npm:**
+
 ```
 $ npm i mjsoul
 ```
 
 **Example:**
+
 ```js
 const MJSoul = require("mjsoul")
 const mjsoul = new MJSoul()
@@ -71,7 +73,26 @@ MJSoul.record.parseById("your game uuid", (data)=>{
 ```
 
 **v2.0修改(不兼容旧版本)**
+
 * 低版本nodejs支持(v8.10通过)
 * 修改了登陆函数
 * 更改了重连的方式(在发消息时才会触发)
 * 删除内置代理，增加wsOption参数
+
+**v2.0.2**
+
+* 增加了sendAsync方法，返回promise对象，默认超时3000ms，new的时候可以传入timeout参数
+* 使用sendAsync方法，如果返回的数据中包含error字段，会reject
+
+```js
+const MJSoul = require("mjsoul")
+const mjsoul = new MJSoul()
+let onOpen = async()=>{
+    let data = await mjsoul.sendAsync(
+        "login",
+        {account: "account", password: mjsoul.hash("password")}
+    )
+    console.log(data)
+}
+mjsoul.open(onOpen)
+```

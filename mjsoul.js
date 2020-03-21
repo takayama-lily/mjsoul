@@ -8,6 +8,9 @@ const FastTest = [
     "authGame", "broadcastInGame", "checkNetworkDelay", "confirmNewRound", "enterGame", "fetchGamePlayerState",
     "finishSyncGame", "inputChiPengGang", "inputGameGMCommand", "inputOperation", "syncGame", "terminateGame"
 ]
+const hash = (password)=>{
+    return crypto.createHmac("sha256", "lailai").update(password, "utf8").digest("hex")
+}
 
 class MJSoul extends EventEmitter {
     constructor(config = {}) {
@@ -21,6 +24,7 @@ class MJSoul extends EventEmitter {
         this.root = pb.Root.fromJSON(require("./liqi.json"))
         this.wrapper = this.root.lookupType("Wrapper")
         this.url = "wss://mj-srv-5.majsoul.com:4101"
+        this.timeout = 3000
         this._onOpen = ()=>{}
         for (let k in config) {
             this[k] = config[k]
@@ -102,8 +106,22 @@ class MJSoul extends EventEmitter {
         this.ws.send(data)
         this.msgIndex++
     }
+    async sendAsync(name, data = {}) {
+        return new Promise((resolve, reject)=>{
+            let id = setTimeout(()=>{
+                reject({"error":"timeout"})
+            }, this.timeout)
+            this.send(name, data, (data)=>{
+                clearTimeout(id)
+                if (data.hasOwnProperty("error"))
+                    reject(data)
+                else
+                    resolve(data)
+            })
+        })
+    }
     hash(password) {
-        return crypto.createHmac("sha256", "lailai").update(password, "utf8").digest("hex")
+        return hash(password)
     }
 }
 
