@@ -24,7 +24,7 @@ class MJSoul extends EventEmitter {
         this.root = pb.Root.fromJSON(require("./liqi.json"))
         this.wrapper = this.root.lookupType("Wrapper")
         this.url = "wss://mj-srv-5.majsoul.com:4101"
-        this.timeout = 3000
+        this.timeout = 5000
         this._onOpen = ()=>{}
         for (let k in config) {
             this[k] = config[k]
@@ -77,7 +77,12 @@ class MJSoul extends EventEmitter {
 
         if (this.status !== "connected") {
             if (this.status === "closed") this.open(this._onOpen)
-            callback({"error":"We are trying to connect to mjsoul. Please try again."})
+            callback({
+                "error": {
+                    "code": 9999,
+                    "message": "We are connecting to mjsoul. Please try again."
+                }
+            })
             return
         }
 
@@ -89,7 +94,12 @@ class MJSoul extends EventEmitter {
         try {
             var service = this.root.lookup(name).toJSON()
         } catch(e) {
-            callback({"error":"Wrong api name."})
+            callback({
+                "error": {
+                    "code": 9998,
+                    "message": "Wrong api name."
+                }
+            })
             return
         }
 
@@ -109,7 +119,12 @@ class MJSoul extends EventEmitter {
     async sendAsync(name, data = {}) {
         return new Promise((resolve, reject)=>{
             let id = setTimeout(()=>{
-                reject({"error":"timeout"})
+                reject({
+                    "error": {
+                        "code": 9997,
+                        "message": "Timeout " + this.timeout + "ms exceeded."
+                    }
+                })
             }, this.timeout)
             this.send(name, data, (data)=>{
                 clearTimeout(id)

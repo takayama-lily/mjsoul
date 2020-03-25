@@ -81,7 +81,7 @@ MJSoul.record.parseById("your game uuid", (data)=>{
 
 **v2.0.2**
 
-* 增加了sendAsync方法，返回promise对象，默认超时3000ms，new的时候可以传入timeout参数
+* 增加了sendAsync方法，返回promise对象，默认超时5000ms，new的时候可以传入timeout参数
 * 使用sendAsync方法，如果返回的数据中包含error字段，会reject
 
 ```js
