@@ -5,8 +5,8 @@ const pb = require("protobufjs")
 const crypto = require("crypto")
 const msgType = {notify: 1, req: 2, res: 3}
 const FastTest = [
-    "authGame", "broadcastInGame", "checkNetworkDelay", "confirmNewRound", "enterGame", "fetchGamePlayerState",
-    "finishSyncGame", "inputChiPengGang", "inputGameGMCommand", "inputOperation", "syncGame", "terminateGame"
+    // "authGame", "broadcastInGame", "checkNetworkDelay", "confirmNewRound", "enterGame", "fetchGamePlayerState",
+    // "finishSyncGame", "inputChiPengGang", "inputGameGMCommand", "inputOperation", "syncGame", "terminateGame"
 ]
 const hash = (password)=>{
     return crypto.createHmac("sha256", "lailai").update(password, "utf8").digest("hex")
