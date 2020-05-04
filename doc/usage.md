@@ -1,8 +1,8 @@
 # **Usage**
 
-MJSoul继承node的EventEmitter类，可以使用on方法来监听服务器通知  
-服务器响应数据中包含error字段，则会触发reject，包括雀魂自己定义的error和追加的三个  
-* 9999 正在连接
+MJSoul继承node的EventEmitter类，可以使用on方法来监听服务器通知。  
+若服务器响应数据中包含error字段，则会触发reject，包括雀魂自己定义的error和追加的三个  
+* 9999 连接服务器失败，将再一次尝试连接
 * 9998 接口不存在
 * 9997 响应超时
 
