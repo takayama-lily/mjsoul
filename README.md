@@ -38,5 +38,5 @@ mjsoul.open(login)
 **详细使用方法请参阅以下资料:**
 
 [雀魂协议](./docs/protocol.md)  
-[雀魂API](https://takayama-lily.github.io/mjsoul/docs/api.html)  
+[雀魂API](https://takayama-lily.github.io/mjsoul/api.html)  
 [使用说明](./docs/usage.md)  
