@@ -43,7 +43,7 @@ const mjsoul = new MJSoul({
     wsOption: "" //websocket参数(使用https://github.com/websockets/ws)，可以用来配置代理等
 })
 
-// wss://gateway-v2.majsoul.com:4501 国服国内线路(默认)
+// wss://gateway-v2.majsoul.com:5201 国服国内线路(默认)
 // wss://gateway-hk.majsoul.com:4501 国服海外线路
 // wss://mjjpgs.mahjongsoul.com:4501 日服
 // wss://mjusgs.mahjongsoul.com:4501 美服
