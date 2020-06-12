@@ -43,11 +43,15 @@ const mjsoul = new MJSoul({
     wsOption: "" //websocket参数(使用https://github.com/websockets/ws)，可以用来配置代理等
 })
 
-// wss://gateway-v2.majsoul.com:5201 国服国内线路(默认)
-// wss://gateway-hk.majsoul.com:4501 国服海外线路
+// wss://gateway-v2.maj-soul.com:5101 线路1(香港原始节点)
+// wss://gateway-vexcdn.maj-soul.com/gateway 线路2(海外中转入口)
+// wss://gateway-cdn.maj-soul.com/gateway 线路3(海外中转入口)
 // wss://mjjpgs.mahjongsoul.com:4501 日服
 // wss://mjusgs.mahjongsoul.com:4501 美服
-// wss://gateway-v2.majsoul.com:6001 雀魂大会室后台
+// wss://gateway-v2.maj-soul.com:6001 雀魂大会室后台
+// wss://mjjpgs.mahjongsoul.com:5201 日服大会室
+// wss://mjusgs.mahjongsoul.com:5201 美服大会室
+// 日服美服不支持账号密码登陆，只能使用token自动登陆(token不会过期)
 ```
 
 ### **大会室后台:**

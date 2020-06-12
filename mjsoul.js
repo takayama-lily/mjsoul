@@ -23,7 +23,7 @@ class MJSoul extends EventEmitter {
         this.service = ".lq.Lobby."
         this.root = pb.Root.fromJSON(require("./liqi.json"))
         this.wrapper = this.root.lookupType("Wrapper")
-        this.url = "wss://gateway-v2.majsoul.com:5201"
+        this.url = "wss://gateway-cdn.maj-soul.com/gateway"
         this.timeout = 5000
         this._onOpen = ()=>{}
         for (let k in config) {
@@ -151,7 +151,7 @@ class DHS extends MJSoul {
         this.service = ".lq.CustomizedContestManagerApi."
         this.root = pb.Root.fromJSON(require("./dhs.json"))
         this.wrapper = this.root.lookupType("Wrapper")
-        this.url = "wss://gateway-v2.majsoul.com:6001"
+        this.url = "wss://gateway-v2.maj-soul.com:6001"
         for (let k in config) {
             this[k] = config[k]
         }
