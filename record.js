@@ -22,8 +22,8 @@ const parse = (data)=>{
 const parseFile = (filepath)=>{
     return parse(fs.readFileSync(filepath))
 }
-const parseById = (id, cb, option = {})=>{
-    https.get("https://mj-srv-3.majsoul.com:7343/majsoul/game_record/"+id, option, (res)=>{
+const parseByUrl = (url, cb, option = {})=>{
+    https.get(url, option, (res)=>{
         let raw = Buffer.from([])
         res.on("data", (data)=>{
             raw = Buffer.concat([raw, Buffer.from(data)])
@@ -34,10 +34,14 @@ const parseById = (id, cb, option = {})=>{
     }).on("error", err=>{
         cb({"error": "connection error"})
     })
+} 
+const parseById = (id, cb, option = {})=>{
+    let url = "https://record-v2.maj-soul.com:5333/majsoul/game_record/"+id
+    parseByUrl(url, cb, option)
 }
-const record = {
-    parse: parse,
-    parseFile: parseFile,
-    parseById: parseById
+module.exports = {
+    parse,
+    parseFile,
+    parseByUrl,
+    parseById
 }
-module.exports = record
