@@ -41,10 +41,10 @@ class MJSoul extends EventEmitter {
         this.ws.on("message", this._onMessage.bind(this))
         this.ws.on("close", ()=>{
             this.status = "closed"
-            this.emit("close")
             this.ws = null
             this.msgIndex = 0
             this.msgQueue = []
+            this.emit("close")
         })
         this.ws.on("error", err=>this.emit("error", err))
     }
