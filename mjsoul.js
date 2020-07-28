@@ -57,7 +57,11 @@ class MJSoul extends EventEmitter {
     _onMessage(data) {
         if (data[0] == msgType.notify) {
             data = this.wrapper.decode(data.slice(1))
-            data.data = this.root.lookupType(data.name).decode(data.data)
+            try {
+                data.data = this.root.lookupType(data.name).decode(data.data)
+            } catch (e) {
+                return
+            }
             data.name = data.name.substr(4)
             if (data.name === "ActionPrototype") {
                 data.data.data = this.root.lookupType(data.data.name).decode(data.data.data)
