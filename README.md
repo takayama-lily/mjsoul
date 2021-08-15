@@ -20,7 +20,7 @@ let login = async()=>{
     //登陆
     let data = await mjsoul.sendAsync(
         "login",
-        {account: "account", password: mjsoul.hash("password")}
+        {account: "account", password: mjsoul.hash("password"), client_version_string: "web-0.9.205"}
     )
     console.log(data)
 
